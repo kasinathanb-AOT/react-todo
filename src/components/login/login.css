@@ -1,0 +1,24 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  text-align: center;
+}
+.login h1 {
+  margin-bottom: 20px;
+}
+.login form {
+  display: flex;
+  flex-direction: column;
+}
+.login form label {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 200px;
+}
+.login form label input {
+  padding: 5px;
+  margin-top: 5px;
+}/*# sourceMappingURL=login.css.map */

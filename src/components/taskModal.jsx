@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
 const TaskModal = ({ show, handleClose, handleSave, taskToEdit }) => {
-  const [title, setTitle] = useState("");
+  const [taskName, setTaskName] = useState("");
   const [desc, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
 
   useEffect(() => {
     if (taskToEdit) {
-      setTitle(taskToEdit.title);
+      console.log(taskToEdit);
+      setTaskName(taskToEdit.taskName);
       setDescription(taskToEdit.desc);
       setDueDate(taskToEdit.dueDate);
     } else {
-      setTitle("");
+      setTaskName("");
       setDescription("");
       setDueDate("");
     }
@@ -20,10 +21,10 @@ const TaskModal = ({ show, handleClose, handleSave, taskToEdit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title) {
-      const task = { title, desc, dueDate, id: taskToEdit?.id, completed: taskToEdit?.completed };
+    if (taskName) {
+      const task = { taskName, desc, dueDate };
       handleSave(task);
-      setTitle("");
+      setTaskName("");
       setDescription("");
       setDueDate("");
       handleClose();
@@ -39,12 +40,12 @@ const TaskModal = ({ show, handleClose, handleSave, taskToEdit }) => {
         <Modal.Body>
           <Form onSubmit={handleSubmit} className="modal-body-container">
             <Form.Group className="mb-3" controlId="formTaskTitle">
-              <Form.Label>Title</Form.Label>
+              <Form.Label>Task Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter task name"
+                value={taskName}
+                onChange={(e) => setTaskName(e.target.value)}
                 required
               />
             </Form.Group>

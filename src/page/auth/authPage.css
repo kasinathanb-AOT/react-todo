@@ -1,0 +1,26 @@
+.authPage {
+  display: flex;
+  height: 100vh;
+}
+.authPage .left, .authPage .right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.authPage .left {
+  background-color: #567c8d;
+  color: #c8d9e6;
+}
+.authPage .left .header {
+  text-align: center;
+}
+.authPage .left .header h1 {
+  margin-bottom: 20px;
+}
+.authPage .left .header button {
+  color: #2f4156;
+}
+.authPage .right {
+  background-color: #c8d9e6;
+}/*# sourceMappingURL=authPage.css.map */

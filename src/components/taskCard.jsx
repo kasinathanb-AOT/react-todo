@@ -6,7 +6,7 @@ import Calendar from '../assets/calender.svg';
 import redCalendar from '../assets/red-calendar.svg';
 
 const TaskCard = ({ task, deleteTask, toggleStatus, editTask }) => {
-  const { id, title, desc, dueDate, completed } = task;
+  const { id, taskName, desc, dueDate, status } = task;
 
   
 
@@ -28,15 +28,15 @@ const TaskCard = ({ task, deleteTask, toggleStatus, editTask }) => {
         <div className="d-flex justify-content-between align-content-center align-items-center mb-2 flex-wrap">
           <input
             type="checkbox"
-            className={completed === true ? 'mt-0 ms-0 me-3 custom-check checked' : ' mt-0 ms-0 me-3 custom-check'}
-            checked={completed}
+            className={status === true ? 'mt-0 ms-0 me-3 custom-check checked' : ' mt-0 ms-0 me-3 custom-check'}
+            checked={status}
             onChange={handleToggleStatus}
           />
           <div className="flex-grow-1 align-items-center flex-wrap">
             <Card.Title className="d-flex justify-content-between align-items-center flex-wrap">
               <div className='status-span'>
-                {title}{' '}
-                <span  className={completed ? 'text-success' : 'text-warning'}></span>
+                {taskName}{' '}
+                <span  className={status ? 'text-success' : 'text-warning'}></span>
               </div>
               <div className="d-flex gap-2 align-content-center align-items-center flex-wrap">
                 <Button variant="link">

@@ -1,0 +1,30 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    text-align: center;
+    h1 {
+      margin-bottom: 20px;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+  
+      label {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        width: 200px;
+  
+        input {
+          padding: 5px;
+          margin-top: 5px;
+        }
+      }
+ 
+    }
+  }
+  
+  

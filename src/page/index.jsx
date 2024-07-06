@@ -1,8 +1,19 @@
+// Index.js
+
 import React, { useEffect, useState } from "react";
 import TaskContainer from "../components/taskContainer";
 import TaskModal from "../components/taskModal";
 import Header from "../components/header";
 import DeleteModal from "../components/deleteModal";
+import {
+  deleteTask,
+  getTasks,
+  toggleTaskStatus,
+  CreateTask,
+  UpdateTask,
+  deleteCompletedTasks,
+} from "../services/userServices";
+import { useParams } from "react-router-dom";
 
 const Index = () => {
   const [tasks, setTasks] = useState([]);
@@ -11,18 +22,20 @@ const Index = () => {
   const [taskIdToDelete, setTaskIdToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [taskToEdit, setTaskToEdit] = useState(null); 
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const { token } = useParams();
 
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("TodoList"));
-    if (storedTasks) {
-      setTasks(storedTasks);
+    if (token) {
+      getTasks(token).then((res) => {
+        setTasks(res.data.Tasks);
+      });
     }
-  }, []);
+  }, [token]);
 
   const handleShowModal = () => {
     setShowModal(true);
-    setTaskToEdit(null); 
+    setTaskToEdit(null);
   };
 
   const handleCloseModal = () => {
@@ -36,26 +49,30 @@ const Index = () => {
 
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
-    setTaskIdToDelete(null); 
+    setTaskIdToDelete(null);
   };
 
-  const handleSave = (task) => {
-    let updatedTasks;
-
-    if (task.id !== undefined) {
-      updatedTasks = tasks.map(t => t.id === task.id ? task : t);
-    } else {
-      const newTask = {
-        ...task,
-        id: Math.floor(Math.random() * 1000),
-        completed: false,
-      };
-      updatedTasks = [...tasks, newTask];
+  const handleSave = async (taskData) => {
+    if (!token) {
+      return;
     }
+    try {
+      let response;
+      if (taskToEdit && taskToEdit.id) {
+        response = await UpdateTask(taskToEdit.id, taskData, token);
+      } else {
+        response = await CreateTask(taskData, token);
+      }
 
-    setTasks(updatedTasks);
-    localStorage.setItem("TodoList", JSON.stringify(updatedTasks));
-    setShowModal(false);
+      if (response && response.tasks) {
+        setTasks(response.tasks);
+        setShowModal(false);
+      } else {
+        console.log("Unexpected response structure:", response);
+      }
+    } catch (error) {
+      console.error("Error saving the task in index JS", error);
+    }
   };
 
   const handleEditingTask = (id) => {
@@ -64,30 +81,49 @@ const Index = () => {
     setShowModal(true);
   };
 
-  const handleDelete = (id) => {
-    if (id !== null) {
+  const handleDelete = async (id) => {
+    if (!token || id === null) {
+      return;
+    }
+    try {
+      await deleteTask(id, token);
       const updatedTasks = tasks.filter((task) => task.id !== id);
       setTasks(updatedTasks);
-      localStorage.setItem("TodoList", JSON.stringify(updatedTasks));
       setShowDeleteModal(false);
       setTaskIdToDelete(null);
+    } catch (error) {
+      console.error("Error deleting the task", error);
     }
   };
 
-  const deleteCompleted = () => {
-    const updatedTasks = tasks.filter((task) => !task.completed);
-    setTasks(updatedTasks);
-    localStorage.setItem("TodoList", JSON.stringify(updatedTasks));
-    setShowDeleteModal(false);
-    setTaskIdToDelete(null);
-  };
+ // In the deleteCompleted function, use the correct API call
+const deleteCompleted = async () => {
+  if (!token) {
+    return;
+  }
 
-  const toggleStatus = (id) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
+  try {
+    await deleteCompletedTasks(token);
+    const updatedTasks = tasks.filter((task) => !task.status);
     setTasks(updatedTasks);
-    localStorage.setItem("TodoList", JSON.stringify(updatedTasks));
+  } catch (error) {
+    console.error("Error deleting completed tasks", error);
+  }
+};
+
+  const toggleStatus = async (id) => {
+    if (!token) {
+      return;
+    }
+    try {
+      await toggleTaskStatus(id, token);
+      const updatedTasks = tasks.map((task) =>
+        task.id === id ? { ...task, status: !task.status } : task
+      );
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error("Error toggling task status", error);
+    }
   };
 
   const handleSearch = (term) => {
@@ -112,13 +148,13 @@ const Index = () => {
         searchTerm={searchTerm}
         sortBy={sortBy}
         handleDeleteCompleted={deleteCompleted}
-        handleEdit={handleEditingTask} 
+        handleEdit={handleEditingTask}
       />
       <TaskModal
         show={showModal}
         handleClose={handleCloseModal}
         handleSave={handleSave}
-        taskToEdit={taskToEdit} 
+        taskToEdit={taskToEdit}
       />
       <DeleteModal
         show={showDeleteModal}

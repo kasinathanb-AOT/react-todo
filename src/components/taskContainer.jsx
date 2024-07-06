@@ -1,26 +1,42 @@
-import React from 'react';
-import { Container, Button, Dropdown } from 'react-bootstrap';
-import TaskCard from './taskCard';
-import TaskModal from './taskModal';
+import React from "react";
+import { Container, Button } from "react-bootstrap";
+import TaskCard from "./taskCard";
+import TaskModal from "./taskModal";
 
-const TaskContainer = ({ tasks, handleDelete, toggleStatus, searchTerm, sortBy, handleEdit, handleDeleteCompleted }) => {
-  const activeTasksFiltered = tasks.filter(
+const TaskContainer = ({
+  tasks,
+  handleDelete,
+  toggleStatus,
+  searchTerm,
+  sortBy,
+  handleEdit,
+  handleDeleteCompleted,
+}) => {
+  const validTasks = Array.isArray(tasks) ? tasks : [];
+
+  const activeTasksFiltered = validTasks.filter(
     (task) =>
-      !task.completed &&
-      task.title.toLowerCase().includes(searchTerm.toLowerCase())
+      task.status === false &&
+      task.taskName &&
+      task.taskName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const completedTasksFiltered = tasks.filter(
+  const completedTasksFiltered = validTasks.filter(
     (task) =>
-      task.completed &&
-      task.title.toLowerCase().includes(searchTerm.toLowerCase())
+      task.status === true &&
+      task.taskName &&
+      task.taskName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const sortTasks = (tasksToSort) => {
-    if (sortBy === 'newest') {
-      return tasksToSort.slice().sort((a, b) => b.id - a.id);
-    } else if (sortBy === 'oldest') {
-      return tasksToSort.slice().sort((a, b) => a.id - b.id);
+    if (sortBy === "newest") {
+      return tasksToSort
+        .slice()
+        .sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate));
+    } else if (sortBy === "oldest") {
+      return tasksToSort
+        .slice()
+        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
     } else {
       return tasksToSort;
     }
@@ -35,8 +51,7 @@ const TaskContainer = ({ tasks, handleDelete, toggleStatus, searchTerm, sortBy, 
   };
 
   const clearCompletedTasks = () => {
-    const completedIds = completedTasksFiltered.map((task) => task.id);
-    handleDeleteCompleted(completedIds);
+    handleDeleteCompleted(completedTasksFiltered.map((task) => task.id));
   };
 
   return (
@@ -68,7 +83,7 @@ const TaskContainer = ({ tasks, handleDelete, toggleStatus, searchTerm, sortBy, 
           editTask={() => handleEditTask(task.id)}
         />
       ))}
-      <TaskModal show={false} handleClose={() => {}} handleSave={() => {}} /> 
+      <TaskModal show={false} handleClose={() => {}} handleSave={() => {}} />
     </Container>
   );
 };
