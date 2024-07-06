@@ -5,10 +5,10 @@ import Auth from "./page/auth/auth";
 
 function App() {
   return (
-    <Router>
+    <Router basename="/react-todo">
       <Routes>
-        <Route path="/" element={<Auth/>} />
-        <Route path="/index/:token"  element={<Index/>}/>
+        <Route path="/" element={<Auth />} />
+        <Route path="/index/:token" element={<Index />} />
       </Routes>
     </Router>
   );
