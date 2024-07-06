@@ -80,7 +80,7 @@ export const CreateTask = async (taskData, token) => {
 
     console.log("Task created successfully:", response.data);
 
-    return response.data;
+    return response;
   } catch (error) {
     console.error(
       "Error creating Task",
@@ -104,17 +104,13 @@ export const UpdateTask = (taskId, taskData, token) => {
 };
 
 export const deleteTask = (taskId, token) => {
-  return axios.delete(
-    DELETE_API,
-    {
-      taskId , 
-      headers: {
-        Authorization: `${token}`, // Correctly format the Authorization header
-      },
-    }
-  );
+  return axios.delete(`${DELETE_API}`, {
+    data: { id: taskId }, 
+    headers: {
+      Authorization: `${token}`, 
+    },
+  });
 };
-
 // APi for deeleting completed tasks
 export const deleteCompletedTasks = (token) => {
   return axios.delete(`${BASE_URL}/deleteCompletedTasks`, {

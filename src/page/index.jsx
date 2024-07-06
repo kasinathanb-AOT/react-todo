@@ -63,9 +63,8 @@ const Index = () => {
       } else {
         response = await CreateTask(taskData, token);
       }
-
-      if (response && response.tasks) {
-        setTasks(response.tasks);
+      if (response && response.data.tasks) {
+        setTasks(response.data.tasks);
         setShowModal(false);
       } else {
         console.log("Unexpected response structure:", response);

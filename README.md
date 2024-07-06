@@ -1,8 +1,7 @@
-# React + Vite
+This TODO application is built using Vite + React.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+All the functionalities are made using backend in Node.js
 
-Currently, two official plugins are available:
+The backend functionality ensure that the user is providing JWT to access the application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Giving the repo Url for the backend repo:<a> https://github.com/kasinathanb-AOT/jwt-todo </a>
