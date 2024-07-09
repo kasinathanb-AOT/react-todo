@@ -68,7 +68,7 @@ const TaskContainer = ({
           editTask={() => handleEditTask(task.id)}
         />
       ))}
-      <div className="d-flex justify-content-between mt-4">
+      <div className="d-flex justify-content-between mt-4 flex-wrap gap-2">
         <h3>Completed Tasks</h3>
         <Button variant="outline-primary" onClick={clearCompletedTasks}>
           Clear Completed Tasks

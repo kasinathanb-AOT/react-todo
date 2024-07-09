@@ -5,6 +5,7 @@ import TaskContainer from "../components/taskContainer";
 import TaskModal from "../components/taskModal";
 import Header from "../components/header";
 import DeleteModal from "../components/deleteModal";
+import "./index.css"
 import {
   deleteTask,
   getTasks,
@@ -134,7 +135,7 @@ const deleteCompleted = async () => {
   };
 
   return (
-    <>
+    <div className="indexPage">
       <Header
         handleShowModal={handleShowModal}
         handleSearch={handleSearch}
@@ -161,7 +162,7 @@ const deleteCompleted = async () => {
         handleDelete={() => handleDelete(taskIdToDelete)}
         taskId={taskIdToDelete}
       />
-    </>
+    </div>
   );
 };
 
