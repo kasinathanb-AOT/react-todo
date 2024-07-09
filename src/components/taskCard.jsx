@@ -22,6 +22,12 @@ const TaskCard = ({ task, deleteTask, toggleStatus, editTask }) => {
     editTask(id);
   };
 
+  const formattedDate = new Date(dueDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  });
+
   return (
     <Card className="my-4">
       <Card.Body>
@@ -59,7 +65,7 @@ const TaskCard = ({ task, deleteTask, toggleStatus, editTask }) => {
             <img src={new Date(dueDate) < new Date() ? redCalendar : Calendar} alt="Calendar" />
 
             </span>
-            by {dueDate}
+            by {formattedDate}
           </Card.Text>
           </div>
           
