@@ -1,5 +1,5 @@
 // export const BASE_URL = "http://localhost:5000"
-export const BASE_URL = "https://todo-backend-8gf8.onrender.com/"
+export const BASE_URL = "https://todo-backend-8gf8.onrender.com"
 
 export const LOGIN_API = `${BASE_URL}/login`
 export const SIGNUP_API = `${BASE_URL}/signUp`
